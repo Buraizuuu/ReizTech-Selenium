@@ -10,6 +10,7 @@ import utility.BrowserDriver;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -27,31 +28,41 @@ public class Hooks extends BrowserDriver {
         if (scenario.isFailed()) {
             TakesScreenshot ts = (TakesScreenshot) driver;
 
-            // Attach screenshot bytes to Cucumber report
+            // Attach screenshot to Cucumber report
             byte[] screenshot = ts.getScreenshotAs(OutputType.BYTES);
             scenario.attach(screenshot, "image/png", "Failed Scenario Screenshot");
 
-            // Format timestamp
+            // Get project root directory (absolute path)
+            String projectRoot = System.getProperty("user.dir");
+            System.out.println("Current working dir (project root): " + projectRoot);
+
+            // Define screenshot folder path under target/screenshots inside project root
+            Path screenshotDir = Paths.get(projectRoot, "target", "screenshots");
+
+            // Generate filename with timestamp and sanitized scenario name
             String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("MMddyyyy_hhmma")).toUpperCase();
-
-            // Format scenario name for file (replace spaces and special chars with
-            // underscores)
             String scenarioName = scenario.getName().replaceAll("[^a-zA-Z0-9]", "_");
+            String screenshotFileName = timestamp + "_" + scenarioName + "_Fail_Report.png";
 
-            // Compose screenshot file name: DateTime_Scenario_Fail_Report.png
-            String screenshotName = "screenshots/" + timestamp + "_" + scenarioName + "_Fail_Report.png";
+            // Full path to screenshot file
+            Path screenshotPath = screenshotDir.resolve(screenshotFileName);
 
             try {
+                // Create directories if they don't exist
+                Files.createDirectories(screenshotDir);
+
+                // Take screenshot as file and copy it to target location
                 File screenshotFile = ts.getScreenshotAs(OutputType.FILE);
-                Files.createDirectories(Paths.get("screenshots"));
-                Files.copy(screenshotFile.toPath(), Paths.get(screenshotName));
-                System.out.println("Saved screenshot: " + screenshotName);
+                Files.copy(screenshotFile.toPath(), screenshotPath);
+
+                System.out.println("✔ Screenshot saved to: " + screenshotPath.toString());
             } catch (IOException e) {
+                System.err.println("✘ Failed to save screenshot:");
                 e.printStackTrace();
             }
         }
+
         closeDriver();
         System.out.println("Browser closed after scenario.");
     }
-
 }

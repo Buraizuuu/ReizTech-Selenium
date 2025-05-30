@@ -13,30 +13,41 @@ import java.time.format.DateTimeFormatter;
 @RunWith(Cucumber.class)
 @CucumberOptions(features = "src/test/java/features", glue = { "utility", "stepDefinition" }, plugin = {
         "pretty",
-        "html:target/report/cucumber-html-report.html",
-// "json:target/report/cucumber.json"
+        "html:target/report/html/cucumber-html-report.html",
+        "json:target/report/json/cucumber.json"
 })
+
 public class TestRunner {
 
     @AfterClass
-    public static void renameReportWithDateTime() {
+    public static void renameReportsWithDateTime() {
         try {
-            // Format: MMddyyyy_hhmma (e.g., 05302025_0751PM)
             String dateTime = LocalDateTime.now()
                     .format(DateTimeFormatter.ofPattern("MMddyyyy_hhmma"));
 
-            Path source = Path.of("target/report/cucumber-html-report.html");
-            Path target = Path.of("target/report/" + dateTime + "_Cucumber_Report.html");
+            Path htmlSource = Path.of("target/report/html/cucumber-html-report.html");
+            Path jsonSource = Path.of("target/report/json/cucumber.json");
 
-            if (Files.exists(source)) {
-                Files.move(source, target, StandardCopyOption.REPLACE_EXISTING);
-                System.out.println("✔ Report renamed to: " + target.toString());
+            Path htmlTarget = Path.of("target/report/html/" + dateTime + "_Cucumber_Report.html");
+            Path jsonTarget = Path.of("target/report/json/" + dateTime + "_Cucumber_Report.json");
+
+            if (Files.exists(htmlSource)) {
+                Files.move(htmlSource, htmlTarget, StandardCopyOption.REPLACE_EXISTING);
+                System.out.println("✔ HTML report renamed to: " + htmlTarget);
             } else {
-                System.out.println("✘ Report file not found to rename.");
+                System.out.println("✘ HTML report file not found.");
+            }
+
+            if (Files.exists(jsonSource)) {
+                Files.move(jsonSource, jsonTarget, StandardCopyOption.REPLACE_EXISTING);
+                System.out.println("✔ JSON report renamed to: " + jsonTarget);
+            } else {
+                System.out.println("✘ JSON report file not found.");
             }
         } catch (Exception e) {
-            System.err.println("✘ Error while renaming the report:");
+            System.err.println("✘ Error while renaming reports:");
             e.printStackTrace();
         }
     }
+
 }
