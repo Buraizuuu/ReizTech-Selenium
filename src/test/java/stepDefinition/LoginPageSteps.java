@@ -5,7 +5,7 @@ import locators.LoginPage;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import utility.BrowserDriver;
-
+import utility.ConfigReader;
 import java.time.Duration;
 
 public class LoginPageSteps extends BrowserDriver {
@@ -14,13 +14,15 @@ public class LoginPageSteps extends BrowserDriver {
 
     @Given("User navigates to login page")
     public void navigate_to_page() {
-        openUrl("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
+        openUrl(ConfigReader.get("BASE_URL") + "web/index.php/auth/login");
     }
 
     @When("User populates username and password")
     public void enter_username_password() {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(LoginPage.usernameInput)).sendKeys("123");
-        wait.until(ExpectedConditions.visibilityOfElementLocated(LoginPage.passwordInput)).sendKeys("admin123");
+        wait.until(ExpectedConditions.visibilityOfElementLocated(LoginPage.usernameInput))
+                .sendKeys(ConfigReader.get("USERNAME"));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(LoginPage.passwordInput))
+                .sendKeys(ConfigReader.get("PASSWORD"));
     }
 
     @And("Clicks login button")
