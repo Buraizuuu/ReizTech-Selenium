@@ -3,7 +3,7 @@ package stepDefinition;
 import io.cucumber.java.en.*;
 import utility.BrowserDriver;
 
-public class LoginPage extends BrowserDriver {
+public class LoginPageSteps extends BrowserDriver {
 
     @Given("User navigates to login page")
     public void navigate_to_page() throws InterruptedException {
