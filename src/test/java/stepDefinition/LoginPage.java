@@ -1,7 +1,6 @@
 package stepDefinition;
 
 import io.cucumber.java.en.*;
-import org.openqa.selenium.By;
 import utility.BrowserDriver;
 
 public class LoginPage extends BrowserDriver {
@@ -15,22 +14,23 @@ public class LoginPage extends BrowserDriver {
     @When("User populates username and password")
     public void enter_username_password() throws InterruptedException {
         Thread.sleep(2000);
-        driver.findElement(By.xpath("//input[@name='username']")).sendKeys("Admin");
+        driver.findElement(locators.LoginPage.usernameInput).sendKeys("Admin");
         Thread.sleep(2000);
-        driver.findElement(By.xpath("(//input[@name='password'])[1]")).sendKeys("admin123");
+        driver.findElement(locators.LoginPage.passwordInput).sendKeys("admin123");
     }
-
 
     @And("Clicks login button")
     public void click_login() throws InterruptedException {
-        driver.findElement(By.xpath("(//button[@type='submit'])[1]")).click();
+        driver.findElement(locators.LoginPage.loginButton).click();
         Thread.sleep(5000);
     }
 
     @Then("Verify if user successfully logged-in")
     public void verify_login() throws InterruptedException {
-        driver.findElement(By.xpath("//h6[text()='Dashboard']")).isDisplayed();
+        boolean isDisplayed = driver.findElement(locators.LoginPage.dashboardHeader).isDisplayed();
+        if (!isDisplayed) {
+            throw new AssertionError("Dashboard header not displayed; login may have failed.");
+        }
         closeDriver();
     }
-
 }
