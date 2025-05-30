@@ -1,34 +1,36 @@
 package stepDefinition;
 
 import io.cucumber.java.en.*;
+import locators.LoginPage;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import utility.BrowserDriver;
+import java.time.Duration;
 
 public class LoginPageSteps extends BrowserDriver {
 
+    private final WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
     @Given("User navigates to login page")
-    public void navigate_to_page() throws InterruptedException {
+    public void navigate_to_page() {
         setupDriver();
         openUrl("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
     }
 
     @When("User populates username and password")
-    public void enter_username_password() throws InterruptedException {
-        Thread.sleep(2000);
-        driver.findElement(locators.LoginPage.usernameInput).sendKeys("Admin");
-        Thread.sleep(2000);
-        driver.findElement(locators.LoginPage.passwordInput).sendKeys("admin123");
+    public void enter_username_password() {
+        wait.until(ExpectedConditions.visibilityOfElementLocated(LoginPage.usernameInput)).sendKeys("Admin");
+        wait.until(ExpectedConditions.visibilityOfElementLocated(LoginPage.passwordInput)).sendKeys("admin123");
     }
 
     @And("Clicks login button")
-    public void click_login() throws InterruptedException {
-        driver.findElement(locators.LoginPage.loginButton).click();
-        Thread.sleep(5000);
+    public void click_login() {
+        wait.until(ExpectedConditions.elementToBeClickable(LoginPage.loginButton)).click();
     }
 
     @Then("Verify if user successfully logged-in")
-    public void verify_login() throws InterruptedException {
-        boolean isDisplayed = driver.findElement(locators.LoginPage.dashboardHeader).isDisplayed();
-        if (!isDisplayed) {
+    public void verify_login() {
+        if (!wait.until(ExpectedConditions.visibilityOfElementLocated(LoginPage.dashboardHeader)).isDisplayed()) {
             throw new AssertionError("Dashboard header not displayed; login may have failed.");
         }
         closeDriver();
