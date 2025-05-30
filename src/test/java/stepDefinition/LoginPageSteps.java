@@ -19,20 +19,20 @@ public class LoginPageSteps extends BrowserDriver {
 
     @When("User populates username and password")
     public void enter_username_password() {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(LoginPage.usernameInput))
+        wait.until(ExpectedConditions.visibilityOfElementLocated(LoginPage.txtUsername))
                 .sendKeys(ConfigReader.get("USERNAME"));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(LoginPage.passwordInput))
+        wait.until(ExpectedConditions.visibilityOfElementLocated(LoginPage.txtPassword))
                 .sendKeys(ConfigReader.get("PASSWORD"));
     }
 
     @And("Clicks login button")
     public void click_login() {
-        wait.until(ExpectedConditions.elementToBeClickable(LoginPage.loginButton)).click();
+        wait.until(ExpectedConditions.elementToBeClickable(LoginPage.btnLogin)).click();
     }
 
     @Then("Verify if user successfully logged-in")
     public void verify_login() {
-        if (!wait.until(ExpectedConditions.visibilityOfElementLocated(LoginPage.dashboardHeader)).isDisplayed()) {
+        if (!wait.until(ExpectedConditions.visibilityOfElementLocated(LoginPage.lblHeader)).isDisplayed()) {
             throw new AssertionError("Dashboard header not displayed; login may have failed.");
         }
     }
