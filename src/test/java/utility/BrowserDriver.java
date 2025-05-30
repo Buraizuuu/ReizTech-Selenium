@@ -3,6 +3,7 @@ package utility;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
@@ -24,7 +25,11 @@ public class BrowserDriver {
                 case "chrome":
                 default:
                     WebDriverManager.chromedriver().setup();
-                    driver = new ChromeDriver();
+                    ChromeOptions chromeOptions = new ChromeOptions();
+                    // chromeOptions.addArguments("--headless=new"); // or "--headless" if using older Chrome
+                    // chromeOptions.addArguments("--disable-gpu");
+                    // chromeOptions.addArguments("--window-size=1920,1080");
+                    driver = new ChromeDriver(chromeOptions);
                     break;
             }
             driver.manage().window().maximize();

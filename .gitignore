@@ -36,3 +36,9 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+# Ignore screenshots folder anywhere in the project
+screenshots/
+
+# Ignore everything inside target/report but keep target itself
+target/report/

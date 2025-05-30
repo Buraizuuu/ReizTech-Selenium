@@ -5,21 +5,21 @@ import locators.LoginPage;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import utility.BrowserDriver;
+
 import java.time.Duration;
 
 public class LoginPageSteps extends BrowserDriver {
 
-    private final WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+    private WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
     @Given("User navigates to login page")
     public void navigate_to_page() {
-        setupDriver();
         openUrl("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
     }
 
     @When("User populates username and password")
     public void enter_username_password() {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(LoginPage.usernameInput)).sendKeys("Admin");
+        wait.until(ExpectedConditions.visibilityOfElementLocated(LoginPage.usernameInput)).sendKeys("123");
         wait.until(ExpectedConditions.visibilityOfElementLocated(LoginPage.passwordInput)).sendKeys("admin123");
     }
 
@@ -33,6 +33,5 @@ public class LoginPageSteps extends BrowserDriver {
         if (!wait.until(ExpectedConditions.visibilityOfElementLocated(LoginPage.dashboardHeader)).isDisplayed()) {
             throw new AssertionError("Dashboard header not displayed; login may have failed.");
         }
-        closeDriver();
     }
 }
