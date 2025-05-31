@@ -4,6 +4,7 @@ import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
 import org.junit.AfterClass;
 import org.junit.runner.RunWith;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -11,12 +12,15 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(features = "src/test/java/features", glue = { "utility", "stepDefinition" }, plugin = {
+@CucumberOptions(
+    features = "src/test/java/features",
+    glue = { "utility", "stepDefinition" },
+    plugin = {
         "pretty",
         "html:target/report/html/cucumber-html-report.html",
         "json:target/report/json/cucumber.json"
-})
-
+    }
+)
 public class TestRunner {
 
     @AfterClass
@@ -34,6 +38,9 @@ public class TestRunner {
             if (Files.exists(htmlSource)) {
                 Files.move(htmlSource, htmlTarget, StandardCopyOption.REPLACE_EXISTING);
                 System.out.println("✔ HTML report renamed to: " + htmlTarget);
+
+                // Copy fixed file back for Jenkins to pick up
+                Files.copy(htmlTarget, htmlSource, StandardCopyOption.REPLACE_EXISTING);
             } else {
                 System.out.println("✘ HTML report file not found.");
             }
@@ -41,6 +48,9 @@ public class TestRunner {
             if (Files.exists(jsonSource)) {
                 Files.move(jsonSource, jsonTarget, StandardCopyOption.REPLACE_EXISTING);
                 System.out.println("✔ JSON report renamed to: " + jsonTarget);
+
+                // Copy fixed file back for Jenkins to pick up
+                Files.copy(jsonTarget, jsonSource, StandardCopyOption.REPLACE_EXISTING);
             } else {
                 System.out.println("✘ JSON report file not found.");
             }
@@ -49,5 +59,4 @@ public class TestRunner {
             e.printStackTrace();
         }
     }
-
 }
