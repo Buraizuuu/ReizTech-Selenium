@@ -26,9 +26,9 @@ public class BrowserDriver {
                 default:
                     WebDriverManager.chromedriver().setup();
                     ChromeOptions chromeOptions = new ChromeOptions();
-                    // chromeOptions.addArguments("--headless=new"); // or "--headless" if using older Chrome
-                    // chromeOptions.addArguments("--disable-gpu");
-                    // chromeOptions.addArguments("--window-size=1920,1080");
+                    chromeOptions.addArguments("--headless=new"); // or "--headless" if using older Chrome
+                    chromeOptions.addArguments("--disable-gpu");
+                    chromeOptions.addArguments("--window-size=1920,1080");
                     driver = new ChromeDriver(chromeOptions);
                     break;
             }
