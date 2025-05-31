@@ -2,21 +2,13 @@ package runner;
 
 import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
+import org.junit.AfterClass;
 import org.junit.runner.RunWith;
-<<<<<<< HEAD
-// import org.junit.AfterClass;
-// import java.nio.file.Files;
-// import java.nio.file.Path;
-// import java.nio.file.StandardCopyOption;
-// import java.time.LocalDateTime;
-// import java.time.format.DateTimeFormatter;
-=======
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
->>>>>>> parent of 76cdc35 (Fail scenario)
 
 @RunWith(Cucumber.class)
 @CucumberOptions(features = "src/test/java/features", glue = { "utility", "stepDefinition" }, plugin = {
@@ -27,8 +19,6 @@ import java.time.format.DateTimeFormatter;
 
 public class TestRunner {
 
-    /*
-    // 💤 Renaming logic commented out for Jenkins compatibility
     @AfterClass
     public static void renameReportsWithDateTime() {
         try {
@@ -59,9 +49,5 @@ public class TestRunner {
             e.printStackTrace();
         }
     }
-<<<<<<< HEAD
-    */
-=======
 
->>>>>>> parent of 76cdc35 (Fail scenario)
 }
