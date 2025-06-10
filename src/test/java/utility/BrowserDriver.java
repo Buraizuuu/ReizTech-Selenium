@@ -12,7 +12,9 @@ public class BrowserDriver {
     private static final String BROWSER = "chrome"; // Change this to "firefox" or "edge" as needed
 
     public static void setupDriver() {
-        if (driver == null) { // Ensure the driver is only initialized once
+        if (driver == null) {
+            boolean isHeadless = false; // 👉 Or fetch from config file
+
             switch (BROWSER.toLowerCase()) {
                 case "firefox":
                     WebDriverManager.firefoxdriver().setup();
@@ -26,13 +28,27 @@ public class BrowserDriver {
                 default:
                     WebDriverManager.chromedriver().setup();
                     ChromeOptions chromeOptions = new ChromeOptions();
-                    chromeOptions.addArguments("--headless=new"); // or "--headless" if using older Chrome
-                    chromeOptions.addArguments("--disable-gpu");
-                    chromeOptions.addArguments("--window-size=1920,1080");
+
+                    if (isHeadless) {
+                        chromeOptions.addArguments("--headless=new");
+                        chromeOptions.addArguments("--disable-gpu");
+                        chromeOptions.addArguments("--window-size=1920,1080");
+
+                        // Fake desktop user-agent
+                        chromeOptions.addArguments(
+                                "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36");
+                    }
+
                     driver = new ChromeDriver(chromeOptions);
+
+                    // Maximize only if NOT headless
+                    if (!isHeadless) {
+                        driver.manage().window().maximize();
+                    }
+
                     break;
             }
-            driver.manage().window().maximize();
+
             driver.manage().deleteAllCookies();
         }
     }
@@ -49,5 +65,10 @@ public class BrowserDriver {
             driver.quit();
             driver = null; // Reset driver to null after quitting
         }
+    }
+
+    // Optional: Get driver instance anywhere
+    public static WebDriver getDriver() {
+        return driver;
     }
 }
