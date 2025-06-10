@@ -2,26 +2,21 @@ package stepDefinition;
 
 import io.cucumber.java.en.*;
 import locators.DirectoryPage;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import utility.BasePage;
 import utility.BrowserDriver;
 import utility.FakeDataUtil;
 
-import java.time.Duration;
-
 public class DirectoryPageSteps extends BrowserDriver {
 
-    private WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+    private BasePage basePage = new BasePage(driver);
 
     @And("User clicks directory menu")
     public void click_directory() {
-        wait.until(ExpectedConditions.elementToBeClickable(DirectoryPage.btnDirectory)).click();
+        basePage.click(DirectoryPage.btnDirectory);
     }
 
     @Then("Search via name")
     public void search_name() {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(DirectoryPage.txtName))
-                .sendKeys(FakeDataUtil.getFirstName());
+        basePage.type(DirectoryPage.txtName, FakeDataUtil.getFirstName());
     }
-
 }

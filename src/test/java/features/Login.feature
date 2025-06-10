@@ -5,8 +5,7 @@ Feature:  Login Page
     And Clicks login button
     Then Verify if user successfully logged-in
 
-
-  Scenario: Navigate and search directory via Name
+Scenario: User logs in and searches the directory by name
     Given User navigates to login page
     When User populates username and password
     And Clicks login button
